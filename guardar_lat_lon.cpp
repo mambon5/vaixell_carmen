@@ -1,32 +1,24 @@
-#include <SD.h>
-#include <SPI.h>
-
-const int chipSelect = 10;  // Pin del CS del mòdul SD
+#include <EEPROM.h>
 
 void setup() {
     Serial.begin(9600);
-    
-    if (!SD.begin(chipSelect)) {
-        Serial.println("Error inicialitzant la SD");
-        return;
-    }
-    
-    Serial.println("SD inicialitzada");
 
-    // Exemple de coordenades del punt inicial
-    float lat = 41.3851;  // Exemple: Barcelona
-    float lon = 2.1734;
-    
-    File dataFile = SD.open("coordenades.txt", FILE_WRITE);
-    
-    if (dataFile) {
-        dataFile.print(lat, 6);
-        dataFile.print(",");
-        dataFile.println(lon, 6);
-        dataFile.close();
-        Serial.println("Coordenades guardades!");
+    // Comprovem si ja hi ha una coordenada guardada
+    float lat, lon;
+    EEPROM.get(0, lat);
+    EEPROM.get(sizeof(float), lon);
+
+    if (isnan(lat) || isnan(lon) || lat == 0.0 || lon == 0.0) { 
+        // Si no hi ha coordenades vàlides, guardem-ne unes de noves
+        lat = 41.3851;  // Exemple: latitud de Barcelona
+        lon = 2.1734;   // Exemple: longitud de Barcelona
+
+        EEPROM.put(0, lat);
+        EEPROM.put(sizeof(float), lon);
+
+        Serial.println("Coordenades inicials guardades!");
     } else {
-        Serial.println("Error obrint el fitxer");
+        Serial.println("Ja hi ha coordenades guardades.");
     }
 }
 
