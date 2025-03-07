@@ -3,7 +3,7 @@
 #include <string>
 #include <cmath>  // Llibreria matemàtica
 
-using namespace std;
+using namespace std; // hola Luis Florit
 
 // aquesta funció anomenada calculaRumb, ens calcula l'angle de rumb
 // per anar del punt "pos1" al punt "pos2"
