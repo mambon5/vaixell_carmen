@@ -22,6 +22,12 @@ unsigned long lastUpdateTime = 0;
 #define des_LNG  2.365253 
 #define des_LAT 41.491594 
 
+
+// Variables per guardar les coordenades
+float latitudInicial = 0.0;
+float longitudInicial = 0.0;
+bool coordenadesGuardades = false;
+
 /* This example shows a basic framework for how you might
    use course and distance to guide a person (or a drone)
    to a destination.  This destination is the Premia de Mar
@@ -52,6 +58,13 @@ void loop()
     {
       lastUpdateTime = millis();
       Serial.println();
+
+      if (gps.location.isValid() && !coordenadesGuardades) {
+                    latitudInicial = gps.location.lat();
+                    longitudInicial = gps.location.lng();
+                    coordenadesGuardades = true;
+                    Serial.println("Coordenades inicials guardades!");
+       }
 
       // Establish our current status
       double distanceToDestination = TinyGPSPlus::distanceBetween(gps.location.lat(), gps.location.lng(), des_LAT, des_LNG);
