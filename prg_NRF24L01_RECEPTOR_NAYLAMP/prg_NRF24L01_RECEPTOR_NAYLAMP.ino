@@ -32,6 +32,10 @@ void setup()
   
   //Abrimos el canal de Lectura
   radio.openReadingPipe(1, direccion);
+
+  radio.setPALevel(RF24_PA_LOW); // o RF24_PA_MIN si cal
+  radio.setDataRate(RF24_250KBPS); // més lent però més fiable
+
   
     //empezamos a escuchar por el canal
   radio.startListening();
@@ -65,4 +69,3 @@ void loop() {
 
 
     
-

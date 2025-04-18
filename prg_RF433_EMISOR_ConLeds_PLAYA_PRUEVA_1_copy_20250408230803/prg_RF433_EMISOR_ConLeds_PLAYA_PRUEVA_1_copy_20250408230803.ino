@@ -27,7 +27,6 @@ void setup(){
      pinMode(PULSADOR1, INPUT_PULLUP);	// pin 2 como entrada con resistencia de pull-up
      pinMode(PULSADOR2, INPUT_PULLUP);	// pin 3 como entrada con resistencia de pull-up
     rf_driver.init();   // inicializa objeto con valores por defecto
-    Serial.begin(9600); // Initialize serial communication at 9600 baud
     Serial.begin(ConsoleBaud);
 }
  
@@ -35,18 +34,19 @@ void loop(){
     
     // rebre un caràcter desde la consola
     char charEnviat = Serial.read();  // Llegeix un caràcter
-    Serial.print("Instruccio general: ");
+  //  Serial.print("Instruccio general: ");
     if(charEnviat == '1' || charEnviat == '2' || charEnviat == '3' || charEnviat == '4'  ) {
        Serial.print("Canvi en Instruccio general: ");
       msg = charEnviat;
+      Serial.println(msg);  // Mostra el caràcter rebut
     }
-    Serial.println(msg);  // Mostra el caràcter rebut
+    //Serial.println(msg);  // Mostra el caràcter rebut
     
     if (digitalRead( msg ))
 
     {	
     // carga numero 1 en mensaje a enviar
-    rf_driver.send((uint8_t *)msg, strlen(msg));	// envia el mensaje
+    rf_driver.send((uint8_t *)&msg, 1); // envia 1 byte
     rf_driver.waitPacketSent();			// espera al envio correcto del mensaje
     Serial.println("missatge enviat"); 
     Serial.println(msg); 
